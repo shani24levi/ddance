@@ -71,11 +71,11 @@ const Home = () => {
         } else if (images.find((el) => el.url === add.url)) {
             setCurrIndex(currIndex - 1)
             setCurrEndIndex(currEndIndex - 1)
-            setCurrView(images.slice(currIndex - 1, currEndIndex - 1))
+            setCurrView(data.slice(currIndex - 1, currEndIndex - 1))
             return
         } else if (!(currIndex === 1 || currIndex === 2)) {
-            removeDataIntoCache(remove.url)
-            addDataIntoCache(add.url)
+            !isEmpty(remove) && removeDataIntoCache(remove.url)
+            !isEmpty(add) && addDataIntoCache(add.url)
         }
         //change the index of 3 main elments
         setCurrIndex(currIndex - 1)
@@ -84,72 +84,36 @@ const Home = () => {
         setStartIndex(startIndex + 1)
         setEndIndex(endIndex - 1)
         setImage(data.slice(startIndex + 1, endIndex - 1))
-        setCurrView(images.slice(currIndex - 1, currEndIndex - 1))
+        setCurrView(data.slice(currIndex - 1, currEndIndex - 1))
     }
 
     const onDownChange = () => {
-        console.log('onDownChange')
-        console.log('dkdkd', images, images.length - 1)
-        console.log(
-            '1',
-            currView,
-            images,
-            currIndex,
-            currEndIndex,
-            'startIndex',
-            startIndex,
-            'endIndex',
-            endIndex
-        )
         let remove = images[0]
         let add = data[endIndex + 1]
-        console.log('====================================')
-        console.log(currIndex < data.length - 1, currIndex, data.length - 1)
-        console.log('====================================')
-        if (currIndex > data.length - 1) {
+        if (currIndex === data.length - 3) {
             setError(true)
             return
         }
-        if (currIndex !== data.length - 8) {
-            console.log(
-                'currIndex < data.length - 1',
-                currEndIndex,
-                currIndex,
-                data.length - 1
-            )
-            removeDataIntoCache(remove.url)
-            addDataIntoCache(add.url)
+        if (currIndex < data.length - 6) {
+            !isEmpty(remove) && removeDataIntoCache(remove.url)
+            !isEmpty(add) && addDataIntoCache(add.url)
             setCurrIndex(currIndex + 1)
             setCurrEndIndex(currEndIndex + 1)
             setStartIndex(startIndex + 1)
             setEndIndex(endIndex + 1)
-            console.log('lldldlldld', startIndex + 1, endIndex + 1)
             setImage(data.slice(startIndex + 1, endIndex + 1))
             setCurrView(data.slice(currIndex + 1, currEndIndex + 1))
-        } else if (images.find((el) => el.url === add.url)) {
-            console.log('jjjjjjj')
+        } else {
             setCurrIndex(currIndex + 1)
             setCurrEndIndex(currEndIndex + 1)
-            setCurrView(images.slice(currIndex + 1, currEndIndex + 1))
-            console.log('currView2', currView)
+            setCurrView(data.slice(currIndex + 1, currEndIndex + 1))
         }
     }
 
-    console.log('2', currView, images, currIndex, currEndIndex)
-
     return (
-        <Container fixed>
+        <>
             {error && <ErrorAlert />}
-            <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                mt={3}
-                mb={1}
-            >
-                <Typography variant="h4" gutterBottom>
-                    React Images Scroller
-                </Typography>
+            <Container fixed>
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -157,25 +121,36 @@ const Home = () => {
                     mt={3}
                     mb={1}
                 >
-                    <ScrollBtn type="up" onUpChange={onUpChange} />
-                    <ScrollBtn type="down" onDownChange={onDownChange} />
+                    <Typography variant="h4" gutterBottom>
+                        React Images Scroller
+                    </Typography>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        mt={3}
+                        mb={1}
+                    >
+                        <ScrollBtn type="up" onUpChange={onUpChange} />
+                        <ScrollBtn type="down" onDownChange={onDownChange} />
+                    </Stack>
                 </Stack>
-            </Stack>
 
-            <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-            >
-                <CardList
-                    currView={currView}
-                    onCardClicked={onCardClicked}
-                    clicked={clicked}
-                />
-            </Grid>
-        </Container>
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    spacing={3}
+                >
+                    <CardList
+                        currView={currView}
+                        onCardClicked={onCardClicked}
+                        clicked={clicked}
+                    />
+                </Grid>
+            </Container>
+        </>
     )
 }
 
