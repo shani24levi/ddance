@@ -3,14 +3,9 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
-import Switch from '@mui/material/Switch'
 import Logo from '../../assets/img/logo.png'
-import useDarkMode from '../../hooks/useDarkMode'
 
 const Header: React.FC = () => {
-    const [darkMode, toggleMode] = useDarkMode()
-    const label = { inputProps: { 'aria-label': 'Switch demo' } }
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar
@@ -45,12 +40,6 @@ const Header: React.FC = () => {
                             DANCE
                         </strong>
                     </Box>
-                    <Switch
-                        {...label}
-                        defaultChecked
-                        color="default"
-                        onChange={() => toggleMode}
-                    />
                 </Toolbar>
             </AppBar>
         </Box>
